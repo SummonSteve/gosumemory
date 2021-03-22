@@ -1,12 +1,15 @@
 package memory
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"log"
 	"math"
+	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
@@ -214,6 +217,43 @@ func bmUpdateData() error {
 		MenuData.GameMode = menuData.MenuGameMode
 		MenuData.Bm.RandkedStatus = menuData.RankedStatus
 		MenuData.Bm.BeatmapMD5 = menuData.MD5
+
+		file, err := os.OpenFile(filepath.Join(SongsFolderPath, menuData.Folder, bmString), os.O_RDONLY, 0666)
+		if err != nil {
+			MenuData.Bm.ArtistUnicode = ""
+			MenuData.Bm.TitleUnicode = ""
+		}
+		buf := bufio.NewReader(file)
+		for {
+			line, err := buf.ReadString('\n')
+			line = strings.TrimSpace(line)
+			if strings.Contains(line, "TitleUnicode:") {
+				MenuData.Bm.TitleUnicode = line[13:]
+			}
+			if strings.Contains(line, "ArtistUnicode:") {
+				MenuData.Bm.ArtistUnicode = line[14:]
+
+			}
+			if strings.Contains(line, "osu file format") {
+				osuv := line[17:]
+				var i int
+				i, err = strconv.Atoi(osuv)
+				if err != nil {
+					i, err = strconv.Atoi(osuv[3:])
+					if err != nil {
+						fmt.Println(err)
+					}
+				}
+				if i <= 9 {
+					MenuData.Bm.ArtistUnicode = menuData.Artist
+					MenuData.Bm.TitleUnicode = menuData.Title
+				}
+			}
+			if err != nil {
+				break
+			}
+		}
+		fmt.Println("[INFO] " + MenuData.Bm.ArtistUnicode + " -- " + MenuData.Bm.TitleUnicode)
 		MenuData.Bm.Path = path{
 			AudioPath:            menuData.AudioFilename,
 			BGPath:               menuData.BackgroundFilename,

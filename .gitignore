@@ -3,6 +3,7 @@ gosumemory
 gosumemory.exe
 gameoverlay
 static
+go_build_main_go.exe
 osu!.db
 config.ini
 __debug_bin
@@ -22,3 +23,4 @@ res.ico
 # Editor-based HTTP Client requests
 /httpRequests/
 gameoverlay.zip
+.idea/workspace.xml

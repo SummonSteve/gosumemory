@@ -155,6 +155,8 @@ type bm struct {
 	Path           path     `json:"path"`
 	HitObjectStats string   `json:"-"`
 	BeatmapString  string   `json:"-"`
+	TitleUnicode   string   `json:"Title_unicode"`
+	ArtistUnicode  string   `json:"Artist_unicode"`
 }
 
 type tim struct {

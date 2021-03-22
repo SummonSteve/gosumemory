@@ -140,7 +140,6 @@ func initBase() error {
 
 	fmt.Println("[MEMORY] Got all patterns...")
 	fmt.Println("WARNING: Mania pp calcualtion is experimental and only works if you choose mania gamemode in the SongSelect!")
-	fmt.Println(fmt.Sprintf("Initialization complete, you can now visit http://%s or add it as a browser source in OBS", config.Config["serverip"]))
 	DynamicAddresses.IsReady = true
 	if cast.ToBool(config.Config["enabled"]) {
 		err = injctr.Injct(process.Pid())
